@@ -1,0 +1,16 @@
+<hibernate-configuration>
+	<session-factory>
+		<!-- Database connection settings -->
+		<property name="connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+		<property name="connection.url">jdbc:sqlserver://localhost:1433;database=ScoresDb;integratedSecurity=true;</property>
+		<!-- JDBC connection pool (use the built-in) -->
+		<property name="connection.pool_size">1</property>
+		<!-- SQL dialect -->
+		<property name="dialect">org.hibernate.dialect.SQLServer2012Dialect</property>
+		<!-- Echo all executed SQL to stdout -->
+		<property name="show_sql">true</property>
+		<mapping class="entities.LevelsManager"></mapping>
+		<mapping class="entities.UsersManager"></mapping>
+		<mapping class="entities.ScoresManager"></mapping>
+	</session-factory>
+</hibernate-configuration>
