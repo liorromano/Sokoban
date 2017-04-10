@@ -81,6 +81,7 @@ public class MainWindowController extends Observable implements View, Initializa
 
 	}
 
+
 	public static void backgroundMusic() {
 		// start the background music
 		{
