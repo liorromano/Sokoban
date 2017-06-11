@@ -173,9 +173,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import model.data.generalObjects.Box;
 import model.data.generalObjects.Player;
 import model.data.generalObjects.PlayerOnTarget;
 import model.data.generalObjects.Point;
+import model.data.generalObjects.Target;
 import model.policy.GeneralSokobanPolicy;
 
 
@@ -187,6 +189,8 @@ public class Level implements Serializable{
     private int numOfTargets=0;
     private HashMap<Point, String> hashMap = new HashMap<Point, String>();
     private ArrayList<Player> players=new ArrayList<Player>();
+    private ArrayList<Target> targetsArray = new ArrayList<Target> ();
+    private ArrayList<Box> boxesArray = new ArrayList<Box>();
     private ArrayList<PlayerOnTarget> playersOnTarget=new ArrayList<PlayerOnTarget>();
     private String levelString = "";
     private GeneralSokobanPolicy policy=null;
@@ -211,6 +215,7 @@ public Level ()
     		{
     		case '@':
     		{
+    			boxesArray.add(new Box(x,y));
     			hashMap.put(new Point(x,y),"BOX");
     			x++;
     			break;
@@ -229,6 +234,7 @@ public Level ()
     		}
     		case 'o':
     		{
+    			targetsArray.add(new Target(x,y));
     			hashMap.put(new Point(x,y),"TARGET");
     			numOfTargets++;
     			x++;
@@ -243,6 +249,8 @@ public Level ()
     		}
     		case '$':
     		{
+    			boxesArray.add(new Box(x,y));
+    			targetsArray.add(new Target(x,y));
     			hashMap.put(new Point(x,y),"BOXONTARGET");
     			countBoxOnTarget++;
     			numOfTargets++;
@@ -251,6 +259,7 @@ public Level ()
     		}
     		case '%':
     		{
+    			targetsArray.add(new Target(x,y));
     			playersOnTarget.add(new PlayerOnTarget(x,y));
     			hashMap.put(new Point(x,y),"PLAYERONTARGET");
     			numOfTargets++;
@@ -275,7 +284,7 @@ public Level ()
     	if(x>=maxWidth)
     		maxWidth=x;
     	rowWidth.add(x);
-    	height=y;
+    	height=y+1;
 
 }
 
@@ -351,7 +360,95 @@ public String getName() {
 public void setName(String name) {
 	this.name = name;
 }
+public ArrayList<Box> getBoxesArray() {
+	return boxesArray;
+}
+public ArrayList<Target> getTargetsArray() {
+	return targetsArray;
+}
+public void setBoxesArray(ArrayList<Box> boxesArray) {
+	this.boxesArray = boxesArray;
+}
+public void setTargetsArray(ArrayList<Target> targetsArray) {
+	this.targetsArray = targetsArray;
+}
+
+public ArrayList<String> getLevelByArrayListOfStrings() // returns an ArrayList<String> object of the level data by the convention (box = @, wall = #, character = A, target = o)
+{
+	ArrayList<String> levelDataTXT = new ArrayList<String>();
+	StringBuilder sb = new StringBuilder("");
+
+	int rows=this.height;
+
+	for (int i=0;i<rows;i++)//row
+	{
+		int column=this.rowWidth.get(i);
+		for (int j=0;j<column;j++)//column
+		{
+			if (!(i==rows && j==column))
+			{
+
+				Point p=new Point(j,i);
+				String s=this.getHashMap().get(p).toString();
+				if(s.equals("BOX"))
+				{
+					sb.append("@");
+				}
+				else if(s.equals("WALL"))
+				{
+					sb.append("#");
+				}
+				else if(s.equals("SPACE"))
+				{
+					sb.append(" ");
+				}
+				else if(s.equals("TARGET"))
+				{
+					sb.append("o");
+				}
+				else if(s.equals("PLAYER"))
+				{
+					sb.append("A");
+				}
+				else if(s.equals("BOXONTARGET"))
+				{
+					sb.append("$");
+				}
+				else if(s.equals("PLAYERONTARGET"))
+				{
+					sb.append("%");
+				}
+				else
+				{
+					sb.append("\r"+"\n");
+				}
+
+			}
+		}
+		levelDataTXT.add(new String(sb.toString()));
+		sb.setLength(0);
+	}
+	return levelDataTXT;
+}
+
+public char[][] getLevelByChar2DArray()
+ 	{
+ 		char[][] data = new char[this.height][];
+ 		for(int i = 0; i < this.height; i++)
+			data[i] = new char[this.rowWidth.get(i)];
+
+
+		ArrayList<String> leveldata = getLevelByArrayListOfStrings();
+
+ 		for(int i = 0; i < this.height; i++)
+ 			for(int j = 0; j < this.rowWidth.get(i); j++)
+ 				data[i][j] = leveldata.get(i).charAt(j);
+
+ 		return data;
+ 	}
 
 }
+
+
 
 

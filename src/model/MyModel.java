@@ -61,4 +61,7 @@ public class MyModel extends Observable implements Model{
 			this.level = level;
 	}
 
+
+
+
 }

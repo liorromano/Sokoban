@@ -13,21 +13,21 @@ public class MyMove extends GeneralMove implements Serializable{
 	private Level level=null;
 	private int countGoals=0;
 	private int countSteps;
-	
+
 	public MyMove(Level level) {
-		
+
 		this.level=level;
 		this.countSteps=level.getSteps();
 		this.countGoals=level.getCountBoxOnTarget();
 	}
-	
+
 	@Override
 	public void move(String direction) {
-		
+
 		int x;
 		int y;
-		
-		
+
+
 		if(!level.getPlayers().isEmpty())
 		{
 			Player c=level.getPlayers().get(0);
@@ -40,7 +40,7 @@ public class MyMove extends GeneralMove implements Serializable{
 			x=c.getPoint().getX();
 			y=c.getPoint().getY();
 		}
-		
+
 		Point player=new Point(x,y);
 		switch(direction)
 		{
@@ -55,7 +55,7 @@ public class MyMove extends GeneralMove implements Serializable{
 		    break;
 		case "down":
 		    movePlayer(player,new Point(x,y+1),new Point(x,y+2), 'd');
-	        break;           
+	        break;
 	    default:
 	    	System.out.println("please insert direction:left/right/up/down");
 	        break;
@@ -69,10 +69,10 @@ public class MyMove extends GeneralMove implements Serializable{
 	public void setLevel(Level level) {
 		this.level = level;
 	}
-	
+
 	public void movePlayer(Point player,Point one,Point two, char c)
     {
-		
+
 		String s=level.getHashMap().get(one);
         switch(s)
         {
@@ -80,8 +80,8 @@ public class MyMove extends GeneralMove implements Serializable{
                 //hit a wall
             	if(level.getPolicy().WalkThroughWall()==false)
             		break;
-            	
-            	
+
+
             case "SPACE": //empty space, move player here
             	if (level.getHashMap().get(player).equals("PLAYERONTARGET"))
             	{
@@ -98,11 +98,11 @@ public class MyMove extends GeneralMove implements Serializable{
             		level.getPlayers().get(0).setPoint(one);
             		countSteps++;
             	}
-            	
-          
+
+
                 break;
             case "TARGET": //player on goal
-            	
+
             	if (level.getHashMap().get(player).equals("PLAYERONTARGET"))
             	{
             		level.getHashMap().put(player ,"TARGET");
@@ -118,7 +118,7 @@ public class MyMove extends GeneralMove implements Serializable{
                 	level.getPlayersOnTarget().add(0,new PlayerOnTarget(one.getX(),one.getY()));
                 	countSteps++;
             	}
-          
+
                 break;
            case "BOX": //player moves box
         	   if(moveBoxPush(one,two)||movepullBox(one, two))
@@ -158,28 +158,28 @@ public class MyMove extends GeneralMove implements Serializable{
                	countSteps++;
                }
                 break;
-        }                 
-        level.setSteps(countSteps);     
-        changeLevelStr();  
+        }
+        level.setSteps(countSteps);
+        changeLevelStr();
         level.setCountBoxOnTarget(countGoals);
-      
+
     }
-    
+
 
 	private void changeLevelStr()
 
 	{
 		String str ="";
 		int rows=level.getHeight();
-		
-		for (int i=0;i<=rows;i++)//row
+
+		for (int i=0;i<rows;i++)//row
 		{
 			int column=level.getRowWidth().get(i);
 			for (int j=0;j<column;j++)//column
 			{
 				if (!(i==rows && j==column))
 				{
-					
+
 					Point p=new Point(j,i);
 					String s=level.getHashMap().get(p).toString();
 					if(s.equals("BOX"))
@@ -192,11 +192,11 @@ public class MyMove extends GeneralMove implements Serializable{
 					}
 					else if(s.equals("SPACE"))
 					{
-						str=str+" ";	
+						str=str+" ";
 					}
 					else if(s.equals("TARGET"))
 					{
-						str=str+"o";	
+						str=str+"o";
 					}
 					else if(s.equals("PLAYER"))
 					{
@@ -210,17 +210,17 @@ public class MyMove extends GeneralMove implements Serializable{
 					{
 						str=str+"%";
 					}
-					else 
+					else
 					{
 						str=str+"\r"+"\n";
-					}	
-					
+					}
+
 				}
 		}
-				
+
 		}
-				
-			
+
+
 		level.setLevelString(str);
 	}
 
@@ -241,7 +241,7 @@ public class MyMove extends GeneralMove implements Serializable{
         			if (level.getHashMap().get(one).equals("BOX"))
         				countGoals++;
         		}
-        		
+
         		else
         			level.getHashMap().put(two,"BOX");
         		if (level.getHashMap().get(one).equals("BOXONTARGET"))
@@ -256,13 +256,13 @@ public class MyMove extends GeneralMove implements Serializable{
     	if(level.getPolicy().pullBox()==false)
     		return false;
     	else
-    		return false;	
+    		return false;
 }
 
 
 }
 
-	
+
 
 
 

@@ -88,7 +88,7 @@ public class Displayer extends Canvas {
 
 			 Point p= new Point(0,0);
 			 gc.clearRect(0, 0, W, H);
-			 for (int i=0;i<=level.getHeight();i++)
+			 for (int i=0;i<level.getHeight();i++)
 				 for(int j=0;j<level.getRowWidth().get(i);j++)
 				 {
 

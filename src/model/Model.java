@@ -12,5 +12,4 @@ public interface Model {
 
 	public void load(String last);
 
-
 }

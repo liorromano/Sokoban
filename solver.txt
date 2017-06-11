@@ -1,0 +1,13 @@
+move down
+move right
+move right
+move right
+
+move right
+move left
+move left
+move left
+move left
+move up
+
+move right
