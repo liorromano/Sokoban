@@ -66,6 +66,19 @@ public class PredicateLevelBuilder {
 
 
 					switch(top.getType()){
+
+					case "characterAt":
+						//getting character location
+						Predicate p=getKnowledgebase().searchCharacter();
+						return new Action("move",id,p.getValue()+" "+value);
+
+					case "path":
+						return new CheckPath("checkPath","", value,getKnowledgebase());
+
+					case "clearAt":
+						System.out.println("clearAt deadend"+"value "+value);
+						return new Action("deadEnd", id, value);
+
 					case "boxAt":
 						Action chosen=null;
 						String[] xy=value.split(",");
@@ -114,16 +127,6 @@ public class PredicateLevelBuilder {
 
 						return chosen;
 
-					case "characterAt":
-						//getting character location
-						Predicate p=getKnowledgebase().searchCharacter();
-						return new Action("move",id,p.getValue()+" "+value);
-					case "path":
-						return new CheckPath("checkPath","", value,getKnowledgebase());
-					case "clearAt":
-						System.out.println("clearAt deadend"+"value "+value);
-						return new Action("deadEnd", id, value);
-						//return null;
 					}
 
 
