@@ -570,6 +570,10 @@ public class MainWindowController extends Observable implements View, Initializa
 		return playerName;
 	}
 
+public void Solve()
+{
+	notifyCommand("solve");
+}
 
 }
 

@@ -1,5 +1,6 @@
 package entities;
 
+import java.net.Socket;
 import java.util.List;
 import java.util.Observable;
 import java.util.logging.Level;
@@ -15,7 +16,7 @@ import org.hibernate.query.Query;
  public class SokobanDBManager extends Observable implements DBmanager{
 	 private static SessionFactory factory;
 	 private Configuration configuration;
-
+	 private Socket socket;
 	 /**
 	  * This is the c'tor of SokobanDBManager.
 	  */
@@ -24,6 +25,9 @@ import org.hibernate.query.Query;
 		configuration = new Configuration();
 		configuration.configure();
 		factory = configuration.buildSessionFactory();
+	}
+public SokobanDBManager(Socket socket) {
+		this.socket=socket;
 	}
 /**
  * This function add a level to the levels database table.

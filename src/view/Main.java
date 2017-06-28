@@ -1,5 +1,6 @@
 package view;
 
+import java.net.Socket;
 import java.util.List;
 
 import controller.MyController;
@@ -15,6 +16,8 @@ import javafx.fxml.FXMLLoader;
 
 
 public class Main extends Application {
+	private SokobanDBManager manager;
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -22,26 +25,14 @@ public class Main extends Application {
 			BorderPane root = (BorderPane)loader.load();
 
 			MyModel m=new MyModel();
-			SokobanDBManager manager=new SokobanDBManager();
 			MainWindowController v=(MainWindowController)loader.getController();
 			MyController theController;
-
-
-			 			//get the args from the main
-
-			 			List<String>args=getParameters().getRaw();
-
-
-			 			//condition for run with server
-			 			if(args.size()>0&&args.get(0).toLowerCase().equals("-server")){
-			 				int port = Integer.parseInt(args.get(1));
-			 				MyClientHandler server=new MyClientHandler();
-			 				theController= new MyController(v, m,manager,server ,port);
-			 				server.addObserver(theController);
-					}
-
-				else//without server
-					theController= new MyController(v, m,manager);
+			
+			int port=5555;
+			Socket socket = new Socket("localhost", port);
+			System.out.println("connected to server");
+			manager=new SokobanDBManager(socket);
+			theController= new MyController(v, m,manager,socket);
 
 			m.addObserver(theController);
 			v.addObserver(theController);

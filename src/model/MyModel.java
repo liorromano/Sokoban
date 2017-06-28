@@ -1,5 +1,10 @@
 package model;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -72,6 +77,46 @@ public class MyModel extends Observable implements Model{
 		if (level!=null)
 			this.level = level;
 	}
+	@Override
+	public void solve(Socket socket) {
+		if(this.level!=null)
+		{
+			String direction="";
+			String solution="";
+			LevelBin level=new LevelBin();
+			level.setName(this.level.getName());
+			level.setLevelString(this.level.getLevelString());
+			level.setUserName("lior");
+			BufferedReader serverInput;
+			try {
+				ObjectOutputStream outToServer = new ObjectOutputStream(socket.getOutputStream());
+				outToServer.writeObject(level);
+				serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				List<String> params = new LinkedList<String>();
+
+				solution = serverInput.readLine();
+				System.out.println("Solution received from server: " + solution);
+				notifyCommand(solution);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	private void notifyCommand(String commandLine) {
+		String[] arr = commandLine.split(" ", 2);
+		List<String> params = new LinkedList<String>();
+
+		for (String s : arr) {
+			params.add(s);
+		}
+
+		setChanged();
+		notifyObservers(params);
+	}
+
 
 
 

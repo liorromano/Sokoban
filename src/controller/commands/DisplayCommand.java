@@ -2,14 +2,13 @@ package controller.commands;
 
 
 import view.View;
-import controller.server.ClientHandler;
 import model.Model;
 
 public class DisplayCommand extends Command {
 
 	private View view;
 	private Model model;
-	private ClientHandler clientHandler;
+	//private ClientHandler clientHandler;
 
 	/**
 	 *This is the c'tor of DisplayCommand.
@@ -17,9 +16,9 @@ public class DisplayCommand extends Command {
 	 * @param model-this is the model that doing all the functions of the game.
 	 * @param clientHandler-this handle the client requests from the server.
 	 */
-	public DisplayCommand(Model model, View view2,ClientHandler clientHandler)
+	public DisplayCommand(Model model, View view2)
 	{
-		this.clientHandler=clientHandler;
+		//this.clientHandler=clientHandler;
 		this.model=model;
 		this.view=view2;
 	}
@@ -31,8 +30,8 @@ public class DisplayCommand extends Command {
 	@Override
 	public void execute() {
 
-		if (clientHandler!=null)
-			clientHandler.sendLevel(model.getLevel());
+		/*if (clientHandler!=null)
+			clientHandler.sendLevel(model.getLevel());*/
 		String path = "display";
 		view.displayData(model.getLevel(), path);
 	}

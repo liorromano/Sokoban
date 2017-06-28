@@ -1,5 +1,6 @@
 package controller;
 
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
@@ -13,6 +14,7 @@ import controller.commands.FinishCommand;
 import controller.commands.LoadCommand;
 import controller.commands.MoveCommand;
 import controller.commands.SaveCommand;
+import controller.commands.SolveCommand;
 import controller.server.ClientHandler;
 import controller.server.MyServer;
 import entities.DBmanager;
@@ -25,8 +27,9 @@ public class MyController implements Observer,Controller{
 	private Model model;
 	private HashMap<String,Command> commands;
 	private GeneralController controller;
-	private ClientHandler clientHandler=null;
-	private MyServer theServer=null;
+	//private ClientHandler clientHandler=null;
+	//private MyServer theServer=null;
+	private Socket socket=null;
 	private DBmanager manager;
 
 	/**
@@ -55,14 +58,14 @@ public class MyController implements Observer,Controller{
  * @param clientHandler-this handle the client requests from the server.
  * @param port-the port that the server working on.
  */
-	public MyController(View view, Model model,DBmanager manager,ClientHandler clientHandler,int port){
+	public MyController(View view, Model model,DBmanager manager, Socket socket){
 		this.model=model;
 		this.view=view;
 		this.manager=manager;
-		this.clientHandler=clientHandler;
-		this.theServer=new MyServer(port, this.clientHandler);
-		this.theServer.start();
-
+		//this.clientHandler=clientHandler;
+		//this.theServer=new MyServer(port, this.clientHandler);
+		//this.theServer.start();
+		this.socket=socket;
 		initCommands();
 		controller = new GeneralController();
 		controller.start();
@@ -74,12 +77,13 @@ public class MyController implements Observer,Controller{
 	protected void initCommands() {
 		commands = new HashMap<String, Command>();
 		commands.put("move", new MoveCommand(model));
-		commands.put("display", new DisplayCommand(model, view,this.clientHandler));
+		commands.put("display", new DisplayCommand(model, view));
 		commands.put("load", new LoadCommand(model));
 		commands.put("save", new SaveCommand(model));
-		commands.put("exit", new ExitCommand(view,this,theServer));
+		commands.put("exit", new ExitCommand(view,this,socket));
 		commands.put("finish", new FinishCommand(view,model));
 		commands.put("SaveToDataBase", new DataBaseCommand(view,model,manager));
+		commands.put("solve", new SolveCommand(model,socket));
 	}
 
 	/**

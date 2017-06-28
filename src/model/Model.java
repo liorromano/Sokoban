@@ -1,5 +1,7 @@
 package model;
 
+import java.net.Socket;
+
 public interface Model {
 
 	public Level getLevel();
@@ -11,5 +13,7 @@ public interface Model {
 	public void move(String last);
 
 	public void load(String last);
+
+	public void solve(Socket socket);
 
 }

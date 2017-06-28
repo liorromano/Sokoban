@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Text?>
 
-<!--<?import view.Displayer?>  -->
+<?import view.Displayer?>
 
 <BorderPane prefHeight="800" prefWidth="700" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainWindowController">
    <top>
@@ -19,6 +19,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#openFile" text="Open" />
                   <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save" />
              	 <MenuItem mnemonicParsing="false" onAction="#stop" text="Close" />
+                  <MenuItem mnemonicParsing="false" onAction="#Solve" text="solve level" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Score">
@@ -46,6 +47,6 @@
       </HBox>
    </bottom>
    <center>
- <!--<Displayer fx:id="SokobanDisplayer" height="550" width="600" BorderPane.alignment="CENTER" wallFileName="./resources/wall.jpg" playerFileName="./resources/Luigi3diy.png" spaceFileName="./resources/space.jpg" boxFileName="./resources/box.png" targetFileName="./resources/target.jpg" playerOnTargetFileName="./resources/manontarget.png" boxOnTargetFileName="./resources/box on target.png" levelCompleted="./resources/levelCompleted.png" />-->
+<Displayer fx:id="SokobanDisplayer" height="550" width="600" BorderPane.alignment="CENTER" wallFileName="./resources/wall.jpg" playerFileName="./resources/Luigi3diy.png" spaceFileName="./resources/space.jpg" boxFileName="./resources/box.png" targetFileName="./resources/target.jpg" playerOnTargetFileName="./resources/manontarget.png" boxOnTargetFileName="./resources/box on target.png" levelCompleted="./resources/levelCompleted.png" />
    </center>
 </BorderPane>
