@@ -29,6 +29,9 @@ package entities;
  		this.fullname = fullname;
 
  	}
+ 	/**
+ 	 * This function override the "toString" function.
+ 	 */
  	@Override
  	public String toString() {
  	return "Users [FullName=" + fullname+"]";

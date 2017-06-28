@@ -39,7 +39,14 @@ public class Client {
 			}
 		} catch (IOException e) { e.printStackTrace();}
 	}
-
+/**
+ * This function open a thread and start the function start.
+ * The thread gets input from the client in the server and send massages.
+ * @param in- it gets the lines from the client.
+ * @param out- prints back to client.
+ * @param exitStr- string of the exit.
+ * @return- return a new thread.
+ */
  	private Thread aSyncReadInputsAndSend(final BufferedReader in, final PrintWriter out,final String exitStr){
  		Thread t=new Thread(new Runnable() {
 			public void run() {readInputsAndSend(in, out, exitStr);}

@@ -17,6 +17,10 @@ public class MyModel extends Observable implements Model{
 	public MyModel() {
 
 	}
+	/**
+	 * The load function gets "String last", this is the path to a file,
+	 * and transfers it to "LoadLevel" to load it to a new level.
+	 */
 	@Override
 	public void load(String last)
 	{
@@ -28,6 +32,10 @@ public class MyModel extends Observable implements Model{
 		params.add("display");
 		this.notifyObservers(params);
 	}
+	/**
+	 * The save function gets "String last", this is the path of the file to be saved,
+	 * and transfers it to "SaveLevel" to save it to a new file.
+	 */
 	@Override
 	public void save(String last)
 	{
@@ -38,6 +46,10 @@ public class MyModel extends Observable implements Model{
 		setChanged();
 		notifyObservers();
 }
+	/**
+	 * This function gets a string of direction to move player.
+	 * It uses GeneralMove to move the player.
+	 */
 	@Override
 	public void move(String last)
 	{

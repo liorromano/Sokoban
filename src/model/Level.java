@@ -205,7 +205,10 @@ public Level ()
    public Level(String inputStreamString) {
 	   InitalizeLevel(inputStreamString);
 }
-
+/**
+ * This function gets inputStreamString and initialize a new level from it.
+ * @param inputStreamString-the input of the stremString.
+ */
     private void InitalizeLevel(String inputStreamString) {
     	int x=0;//column
 		int y=0;//rows
@@ -372,7 +375,10 @@ public void setBoxesArray(ArrayList<Box> boxesArray) {
 public void setTargetsArray(ArrayList<Target> targetsArray) {
 	this.targetsArray = targetsArray;
 }
-
+/**
+ * This function takes a level and transfer it to ArrayList of strings.
+ *@return- ArrayList of string of the level.
+ */
 public ArrayList<String> getLevelByArrayListOfStrings() // returns an ArrayList<String> object of the level data by the convention (box = @, wall = #, character = A, target = o)
 {
 	ArrayList<String> levelDataTXT = new ArrayList<String>();
@@ -431,6 +437,10 @@ public ArrayList<String> getLevelByArrayListOfStrings() // returns an ArrayList<
 	return levelDataTXT;
 }
 
+/**
+ * This function takes a level and convert it to char[][].
+ *@return char[][].
+ */
 public char[][] getLevelByChar2DArray()
  	{
  		char[][] data = new char[this.height][];

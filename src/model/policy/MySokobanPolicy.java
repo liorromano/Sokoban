@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class MySokobanPolicy extends GeneralSokobanPolicy implements Serializable{
 
 	private static final long serialVersionUID = -3615622134611243390L;
+
 	@Override
 	public boolean WalkThroughWall() {
 		return false;
@@ -23,5 +24,5 @@ public class MySokobanPolicy extends GeneralSokobanPolicy implements Serializabl
 	public MySokobanPolicy() {
 		super();
 	}
-	
+
 }

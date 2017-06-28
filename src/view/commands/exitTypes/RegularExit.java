@@ -2,7 +2,9 @@ package view.commands.exitTypes;
 
 
 public class RegularExit extends GeneralExit {
-
+/**
+ * This function closes the game.
+ */
 	@Override
 	public void exit() {
 		System.out.println("bye bye...");

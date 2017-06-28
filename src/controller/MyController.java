@@ -29,6 +29,13 @@ public class MyController implements Observer,Controller{
 	private MyServer theServer=null;
 	private DBmanager manager;
 
+	/**
+	 * This is the c'tor of the controller. The function initialize the view,model, DBmanager.
+	 * also it's start the General controller that managed the commands.
+	 * @param view- this is the view of the game.
+	 * @param model-this is the model that doing all the functions of the game.
+	 * @param manager-this is the db manager.
+	 */
 	public MyController(View view, Model model,DBmanager manager){
 		this.model=model;
 		this.view=view;
@@ -38,7 +45,16 @@ public class MyController implements Observer,Controller{
 		controller.start();
 	}
 
-
+/**
+ * This is the c'tor of the controller. The function initialize the view,model, DBmanager.
+ * also it's start the General controller that managed the commands.
+ * and also start the client server.
+ * @param view- this is the view of the game.
+ * @param model-this is the model that doing all the functions of the game.
+ * @param manager-this is the db manager.
+ * @param clientHandler-this handle the client requests from the server.
+ * @param port-the port that the server working on.
+ */
 	public MyController(View view, Model model,DBmanager manager,ClientHandler clientHandler,int port){
 		this.model=model;
 		this.view=view;
@@ -52,7 +68,9 @@ public class MyController implements Observer,Controller{
 		controller.start();
 	}
 
-
+/**
+ * The function initialize the commands types.
+ */
 	protected void initCommands() {
 		commands = new HashMap<String, Command>();
 		commands.put("move", new MoveCommand(model));
@@ -64,6 +82,10 @@ public class MyController implements Observer,Controller{
 		commands.put("SaveToDataBase", new DataBaseCommand(view,model,manager));
 	}
 
+	/**
+	 * This function is the function of the Observer.
+	 * It's insert every command to the general controller.
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if (arg!=null)
@@ -83,6 +105,10 @@ public class MyController implements Observer,Controller{
 		}
 	}
 
+	/**
+	 * Function to get the General controller.
+	 * @return- the general controller.
+	 */
 	public GeneralController getController() {
 		return controller;
 	}

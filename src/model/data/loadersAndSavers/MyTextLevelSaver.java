@@ -6,6 +6,9 @@ import model.Level;
 
 
 public class MyTextLevelSaver implements LevelSaver{
+	/**
+	 * This function saves level to txt file.
+	 */
 	public void saveLevel(Level level,String name)
 	{
 	try

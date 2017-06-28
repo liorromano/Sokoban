@@ -1,0 +1,13 @@
+controller
+controller.commands
+controller.server
+entities
+model
+model.data.generalObjects
+model.data.loadersAndSavers
+model.policy
+model.policy.move
+sokobanSolver
+view
+view.commands.display
+view.commands.exitTypes

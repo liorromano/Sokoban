@@ -16,13 +16,18 @@ import org.hibernate.query.Query;
 	 private static SessionFactory factory;
 	 private Configuration configuration;
 
+	 /**
+	  * This is the c'tor of SokobanDBManager.
+	  */
 	 public SokobanDBManager() {
 		 Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
 		configuration = new Configuration();
 		configuration.configure();
 		factory = configuration.buildSessionFactory();
 	}
-
+/**
+ * This function add a level to the levels database table.
+ */
 	 public void addLevel(String fName) {
 			LevelsManager level = new LevelsManager(fName);
 			Transaction tx = null;
@@ -40,7 +45,9 @@ import org.hibernate.query.Query;
 			}
 
 		}
-
+	 /**
+	  * This function add a user to the users database table.
+	  */
 		public void addUser(String fName) {
 			UsersManager user = new UsersManager(fName);
 			Transaction tx = null;
@@ -57,7 +64,13 @@ import org.hibernate.query.Query;
 				session.close();
 			}
 		}
-
+		/**
+		 * This function insert a score to the scores database table.
+		 * @param name- this is an input of the user name.
+		 * @param levelName-the level name to be saved.
+		 * @param time-the time that the user finished the level.
+		 * @param steps-counter of how much steps it takes the user to finish the level.
+		 */
 		private void addScore(String name, String levelName,int time, int steps) {
 			ScoresManager emp = new ScoresManager(name,levelName,time,steps);
 			Transaction tx = null;
@@ -75,6 +88,10 @@ import org.hibernate.query.Query;
 			session.close();
 			}
 		}
+		/**
+		 * This function delete a score from the scores database table.
+		 * @param score-the score that need to be deleted.
+		 */
 		private void deleteScore(ScoresManager score) {
 			Session session = factory.openSession();
 			Transaction tx = null;
@@ -93,6 +110,10 @@ import org.hibernate.query.Query;
 			}
 			}
 
+		/**
+		 * This function checks if there is already a score in the data base.
+		 * If there is, it checks if we need to save a new score or not.
+		 */
 		public void checkIfsave(String name,String levelName, int step, int time) {
 			UsersManager user=null;
 			ScoresManager scores=null;

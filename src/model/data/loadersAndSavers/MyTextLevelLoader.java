@@ -9,6 +9,9 @@ import model.Level;
 
 public class MyTextLevelLoader implements LevelLoader
 {
+	/**
+	 * This function loads level from txt file.
+	 */
 	public Level loadLevel (InputStream inputStream)
 	{
 		try(Scanner scanner=new Scanner(new BufferedReader(new InputStreamReader(inputStream))))

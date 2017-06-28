@@ -30,6 +30,9 @@ public LevelsManager() {
  		this.levelname = levelname;
 
  	}
+ 	/**
+ 	 * This function override the "toString" function.
+ 	 */
  	@Override
  	public String toString() {
  	return "Levels [levelName=" + levelname+"]";

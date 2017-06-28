@@ -8,9 +8,12 @@ import java.io.FileOutputStream;
 import model.Level;
 
 public class MyXMLLevelSaver implements LevelSaver{
+	/**
+	 * This function saves level to XML file.
+	 */
 	public void saveLevel(Level level,String name)
 	{
-		
+
 		XMLEncoder encoder=null;
 		try{
 		encoder=new XMLEncoder(new BufferedOutputStream(new FileOutputStream(name)));
@@ -19,10 +22,10 @@ public class MyXMLLevelSaver implements LevelSaver{
 		}
 		encoder.writeObject(level);
 		encoder.close();
-		
 
 
-} 
+
 }
-	
+}
+
 

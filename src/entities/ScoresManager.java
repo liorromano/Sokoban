@@ -7,9 +7,7 @@ import javax.persistence.Id;
  @Entity(name="Scores")
  public class ScoresManager implements Serializable {
 
- 	/**
- 	 *
- 	 */
+
  	private static final long serialVersionUID = 1L;
  	@Id
  	@Column(name="FullName")
@@ -70,7 +68,13 @@ public void setLevelname(String levelname) {
  		this.steps = steps;
  	}
 
-
+/**
+ * This is the c'tor for the ScoresManager.
+ * @param username- this is an input of the user name.
+ * @param levelname-the level name to be saved.
+ * @param time-the time that the user finished the level.
+ * @param steps-counter of how much steps it takes the user to finish the level.
+ */
  	public ScoresManager(String username , String levelname ,int time , int steps)
  	{
  		this.fullname = username;
@@ -79,6 +83,9 @@ public void setLevelname(String levelname) {
  		this.steps=steps;
  	}
 
+ 	/**
+ 	 * This function override the "toString" function.
+ 	 */
  	@Override
  	public String toString() {
  	return "Scores [UserName=" + fullname + "LevelName=" + levelname + "Steps="+steps +"Time="+time + "]";

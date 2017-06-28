@@ -13,14 +13,19 @@ public class MyMove extends GeneralMove implements Serializable{
 	private Level level=null;
 	private int countGoals=0;
 	private int countSteps;
-
+/**
+ * This is the c'tor of MyMove.
+ * @param level- the level that we need to move the player.
+ */
 	public MyMove(Level level) {
 
 		this.level=level;
 		this.countSteps=level.getSteps();
 		this.countGoals=level.getCountBoxOnTarget();
 	}
-
+	/**
+	 * This function uses movePlayer function to move the player to the correct direction.
+	 */
 	@Override
 	public void move(String direction) {
 
@@ -69,7 +74,13 @@ public class MyMove extends GeneralMove implements Serializable{
 	public void setLevel(Level level) {
 		this.level = level;
 	}
-
+/**
+ * This is the function that moves the player.
+ * @param player-the player point.
+ * @param one-one point to the side of the player.
+ * @param two-points to the side of the player.
+ * @param c-the letter of the direction.
+ */
 	public void movePlayer(Point player,Point one,Point two, char c)
     {
 
@@ -165,7 +176,9 @@ public class MyMove extends GeneralMove implements Serializable{
 
     }
 
-
+/**
+ * This function changes the level string after moving player.
+ */
 	private void changeLevelStr()
 
 	{
@@ -223,7 +236,13 @@ public class MyMove extends GeneralMove implements Serializable{
 
 		level.setLevelString(str);
 	}
-
+/**
+ * This function checks if we can move player and the boxes.
+ * If we can she does the change.
+ * @param one-one point to the side of the player.
+ * @param two-points to the side of the player.
+ *  @return boolean answer.
+ */
     public boolean moveBoxPush(Point one,Point two)
     {
         boolean result = false;
@@ -251,6 +270,12 @@ public class MyMove extends GeneralMove implements Serializable{
 		return result;
 
     }
+    /**
+     * This function is the policy if we can pull boxes.
+	 * @param one-one point to the side of the player.
+	 * @param two-points to the side of the player.
+	 * @return boolean answer.
+     */
     public boolean movepullBox (Point one,Point two)
     {
     	if(level.getPolicy().pullBox()==false)

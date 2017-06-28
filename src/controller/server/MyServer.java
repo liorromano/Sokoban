@@ -14,7 +14,11 @@ import java.util.Observer;
  	private ClientHandler ch;
  	private volatile boolean stop;
 
-
+/**
+ * This is the server c'tor.
+ * @param port-the port of the server.
+ * @param ch- the client handler that works with the server.
+ */
  	public MyServer(int port, ClientHandler ch) {
  		this.port=port;
  		this.ch=ch;
@@ -48,13 +52,17 @@ import java.util.Observer;
  	}
 
 
-
+/**
+ * This function stops the server.
+ */
 	public void stopServer() {
 		stop=true;
 
 	}
 
-
+/**
+ * This function notify the observers.
+ */
 	public void update(Observable observable, Object object) {
 		setChanged();
 		notifyObservers(object);

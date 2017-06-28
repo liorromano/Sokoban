@@ -17,7 +17,9 @@ public class MyClientHandler extends Observable implements ClientHandler {
 
 	private BufferedReader fromClient;
 	private PrintWriter toClient;
-
+/**
+ * This function handles with the client that is connected to the server.
+ */
 	public void handleClient(InputStream inFromClient, OutputStream outToClient) {
 
 		fromClient = new BufferedReader(new InputStreamReader(inFromClient));
@@ -65,6 +67,9 @@ public class MyClientHandler extends Observable implements ClientHandler {
 		toClient.close();
 	}
 
+	/**
+	 * This function sends the level to the client.
+	 */
 	public void sendLevel(Level level)
 	{
 		if (level!=null)

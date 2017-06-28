@@ -29,6 +29,11 @@ public class GeneralController implements Controller{
 	}
 	public void stop() { this.isRunning = false; }
 
+
+/**
+ * This function inserts a command to the commands queue
+ * @param command- This is the command that need to be inserted.
+ */
 	public void insertCommand(Command command) {
 			try
 			{

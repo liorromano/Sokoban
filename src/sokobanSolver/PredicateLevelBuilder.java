@@ -17,6 +17,13 @@ import strips.SokPredicate;
 
 public class PredicateLevelBuilder {
 	static Clause goal=new Clause(null);
+
+
+	/**
+	 * This function initialize all the level predicate.
+	 * @param level-the game level.
+	 * @return-return Clause.
+	 */
 	public static Clause getKB(ArrayList<char[]> level){
 		Clause kb=new Clause(null);
 		int boxCount=0;
@@ -37,7 +44,11 @@ public class PredicateLevelBuilder {
 		return kb;
 	}
 
-
+/**
+ *This function read a file and makes The planes how to move using strips.
+ * @param fileName-the level file.
+ * @return- return plannable.
+ */
 	public static Plannable readFile(String fileName){
 		try{
 
@@ -57,7 +68,9 @@ public class PredicateLevelBuilder {
 					// TODO Auto-generated method stub
 					return null;
 				}
-
+/**
+ * Checks if its the finish level status.
+ */
 				@Override
 				public Action getsatisfyingAction(Predicate top) {
 

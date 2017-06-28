@@ -77,7 +77,9 @@ public class MainWindowController extends Observable implements View, Initializa
 
 	}
 
-
+/**
+ * This function is for the background music.
+ */
 	public static void backgroundMusic() {
 		// start the background music
 		{
@@ -90,7 +92,9 @@ public class MainWindowController extends Observable implements View, Initializa
 		}
 
 	}
-
+/**
+ * This function initialize the gui.
+ */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		counter = new SimpleStringProperty();
@@ -123,6 +127,7 @@ public class MainWindowController extends Observable implements View, Initializa
 		});
 	}
 
+
 	public void start() {
 
 		String command = "display";
@@ -133,7 +138,9 @@ public class MainWindowController extends Observable implements View, Initializa
 		this.notifyObservers(params);
 
 	}
-
+/**
+ * This function save a level.
+ */
 	public void saveFile() {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Save SokoBan's Level File");
@@ -143,7 +150,9 @@ public class MainWindowController extends Observable implements View, Initializa
 			notifyCommand("save " + chosen.getPath());
 		}
 	}
-
+/**
+ * This function opens file.
+ */
 	public void openFile() {
 
 		FileChooser fc = new FileChooser();
@@ -158,7 +167,10 @@ public class MainWindowController extends Observable implements View, Initializa
 			notifyCommand("load " + chosen.getPath());
 		}
 	}
-
+/**
+ * This function notify observers.
+ * @param commandLine- the command to notify.
+ */
 	private void notifyCommand(String commandLine) {
 		String[] arr = commandLine.split(" ", 2);
 		List<String> params = new LinkedList<String>();
@@ -170,7 +182,9 @@ public class MainWindowController extends Observable implements View, Initializa
 		setChanged();
 		notifyObservers(params);
 	}
-
+/**
+ * This function displays level.
+ */
 	public void displayData(Level level, String command) {
 
 		if (resetTimerFlag == true) {
@@ -190,11 +204,16 @@ public class MainWindowController extends Observable implements View, Initializa
 		this.setStepsText("Steps: " + Integer.toString(level.getSteps()));
 
 	}
-
+/**
+ * This function notify the command exit.
+ */
 	public void stop() {
 		notifyCommand("exit");
 	}
 
+	/**
+	 * This function closes the game.
+	 */
 	@Override
 	public void exit() {
 
@@ -204,6 +223,9 @@ public class MainWindowController extends Observable implements View, Initializa
 		exit.exit();
 	}
 
+	/**
+	 * This function resets the game timer.
+	 */
 	public void resetTimer() // reset the game timer
 	{
 		count = 0;
@@ -219,7 +241,9 @@ public class MainWindowController extends Observable implements View, Initializa
 	private void setStepsText(String text) {
 		steps.setText(text);
 	}
-
+/**
+ * This function opens the finish level screen.
+ */
 	public void FinishLevel(String levelName) {
 
 		Platform.runLater(new Runnable() {
@@ -299,7 +323,9 @@ public class MainWindowController extends Observable implements View, Initializa
 		return result.get();
 	}
 
-
+/**
+ * This function shows the leader boards from db by level.
+ */
 	public void showLeaderBoardsBylevel() {
 
 
@@ -333,7 +359,10 @@ public class MainWindowController extends Observable implements View, Initializa
 		});
 
 	}
-
+/**
+ * This function initialize the table.
+ * @return- return the users table.
+ */
 	private TableView<ScoresManager> initiliazetable()
 	{
 		TableView<ScoresManager> usertable;
@@ -364,6 +393,11 @@ public class MainWindowController extends Observable implements View, Initializa
 		return usertable;
 	}
 
+	/**
+	 * This function shows all scores from db.
+	 * @param levelName- the name of the level that we want to see all the scores.
+	 * @return- return a table.
+	 */
 	public ObservableList<ScoresManager> getUsers(String levelName) {
 		ObservableList<ScoresManager> users = FXCollections.observableArrayList();
 		if(levelName!=null)
@@ -383,7 +417,11 @@ public class MainWindowController extends Observable implements View, Initializa
 		}
 				return users;
 	}
-
+/**
+ * This function shows a specific scores for player.
+ * @param selectedScore- the score that the user click on.
+ * @return- return a table.
+ */
 	public ObservableList<ScoresManager> getUser(ScoresManager selectedScore) {
 
 		ObservableList<ScoresManager> users = FXCollections.observableArrayList();
@@ -418,7 +456,9 @@ public class MainWindowController extends Observable implements View, Initializa
 		}
 
 	}
-
+/**
+ * This function shows all leader board from db.
+ */
 	public void showLeaderBoards() {
 
 		TableView<ScoresManager> usertable=initiliazetable();
@@ -496,7 +536,10 @@ public class MainWindowController extends Observable implements View, Initializa
 
 			});
 		}
-
+/**
+ * This function shows all scores.
+ * @return-return a table of the scores.
+ */
 	public ObservableList<ScoresManager> getAllScores() {
 		ObservableList<ScoresManager> users = FXCollections.observableArrayList();
 			Query<ScoresManager> query = HibernateUtil.getSessionFactory().openSession().createQuery("from Scores");

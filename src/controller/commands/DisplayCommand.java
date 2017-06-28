@@ -11,6 +11,12 @@ public class DisplayCommand extends Command {
 	private Model model;
 	private ClientHandler clientHandler;
 
+	/**
+	 *This is the c'tor of DisplayCommand.
+	 * @param view2- this is the view of the game.
+	 * @param model-this is the model that doing all the functions of the game.
+	 * @param clientHandler-this handle the client requests from the server.
+	 */
 	public DisplayCommand(Model model, View view2,ClientHandler clientHandler)
 	{
 		this.clientHandler=clientHandler;
@@ -18,7 +24,10 @@ public class DisplayCommand extends Command {
 		this.view=view2;
 	}
 
-
+/**
+ * This is the execute function of the Display command.
+ * It send the request to the view, to display the game.
+ */
 	@Override
 	public void execute() {
 

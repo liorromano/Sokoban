@@ -7,10 +7,13 @@ import java.io.ObjectInputStream;
 import model.Level;
 
 public class MyObjectLevelLoader implements LevelLoader{
-	
+
+	/**
+	 * This function loads level from obj file.
+	 */
 	public Level loadLevel (InputStream inputStream)
 	{
-		try{			
+		try{
 			ObjectInputStream in = new ObjectInputStream(inputStream);
 			Level level = (Level)in.readObject();
 			in.close();

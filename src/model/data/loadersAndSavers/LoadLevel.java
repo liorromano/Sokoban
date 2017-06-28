@@ -12,6 +12,12 @@ public class LoadLevel {
 	private Level level=null;
 	private HashMap<String, LevelLoader> commands=new HashMap<String,LevelLoader>();
 
+/**
+ * This is the c'tor of LoadLevel.
+ * It initialize the commands Hash map.
+ * @param policy- the policy of sokoban.
+ * @param path- the path of the file to be loaded.
+ */
 	public LoadLevel(GeneralSokobanPolicy policy,String path)
 	{
 		commands.put("txt", new MyTextLevelLoader());
@@ -19,7 +25,11 @@ public class LoadLevel {
 		commands.put("obj", new MyObjectLevelLoader());
 		createLevel(policy,path);
 	}
-
+/**
+ * This function creates a new level from file.
+ * @param policy- the policy of sokoban.
+ * @param path- the path of the file to be loaded.
+ */
 	private void createLevel(GeneralSokobanPolicy policy,String path)
 	{
 
@@ -49,7 +59,11 @@ public class LoadLevel {
 		}
 
 
-
+/**
+ * This function find which type of file we need to load.
+ * @param cmd-the string of the path.
+ * @return- string with file type.
+ */
 	private String getLast(String cmd)
 	{
 		int i = cmd.indexOf(".");
@@ -63,6 +77,12 @@ public class LoadLevel {
 			return word;
 		}
 	}
+/**
+	 * This function find the level name in the path.
+	 * @return- string with level name.
+	 *
+ * @param path- the string path of the file.
+ */
 	private String getLevelName(String path)
 	{
 		int i=path.lastIndexOf("\\");

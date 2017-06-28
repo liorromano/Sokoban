@@ -30,6 +30,9 @@ public class Displayer extends Canvas {
 		redraw();
 	}
 
+	/**
+	 * This is the c'tor of the Displayer.
+	 */
 	public Displayer() {
 
 		wallFileName=new SimpleStringProperty();
@@ -44,10 +47,14 @@ public class Displayer extends Canvas {
 
 	public void setSokobanData (Level level)
 	{
-		
+
 		this.level=level;
 		redraw();
 	}
+
+	/**
+	 * This function redraw the level to the gui after each change at the level.
+	 */
 	 public void redraw()
 	 {
 		 if (level!=null)
@@ -141,6 +148,10 @@ public class Displayer extends Canvas {
 				 }
 		 }
 
+
+	 /**
+	  * This function shows the finish level window.
+	  */
 public void finish()
 {
 	 GraphicsContext gc= getGraphicsContext2D();
