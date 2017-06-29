@@ -14,6 +14,7 @@ public interface Model {
 
 	public void load(String last);
 
-	public void solve(Socket socket);
+	public void solve(Level level,String name);
+
 
 }

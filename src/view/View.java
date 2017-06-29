@@ -1,5 +1,7 @@
 package view;
 
+import java.net.Socket;
+
 import javafx.stage.Stage;
 import model.Level;
 
@@ -23,4 +25,7 @@ public interface View{
 
 	public String getPlayerName();
 
+	void solve();
+
+	public String getStartplayerName();
 }

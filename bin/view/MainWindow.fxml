@@ -19,7 +19,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#openFile" text="Open" />
                   <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save" />
              	 <MenuItem mnemonicParsing="false" onAction="#stop" text="Close" />
-                  <MenuItem mnemonicParsing="false" onAction="#Solve" text="solve level" />
+                  <MenuItem mnemonicParsing="false" onAction="#solve" text="solve level" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Score">
@@ -47,6 +47,6 @@
       </HBox>
    </bottom>
    <center>
-<Displayer fx:id="SokobanDisplayer" height="550" width="600" BorderPane.alignment="CENTER" wallFileName="./resources/wall.jpg" playerFileName="./resources/Luigi3diy.png" spaceFileName="./resources/space.jpg" boxFileName="./resources/box.png" targetFileName="./resources/target.jpg" playerOnTargetFileName="./resources/manontarget.png" boxOnTargetFileName="./resources/box on target.png" levelCompleted="./resources/levelCompleted.png" />
+ <Displayer fx:id="SokobanDisplayer" height="550" width="600" BorderPane.alignment="CENTER" wallFileName="./resources/wall.jpg" playerFileName="./resources/Luigi3diy.png" spaceFileName="./resources/space.jpg" boxFileName="./resources/box.png" targetFileName="./resources/target.jpg" playerOnTargetFileName="./resources/manontarget.png" boxOnTargetFileName="./resources/box on target.png" levelCompleted="./resources/levelCompleted.png" />
    </center>
 </BorderPane>

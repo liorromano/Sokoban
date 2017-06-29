@@ -7,13 +7,14 @@ import model.Model;
 public class MoveCommand extends Command {
 
 	private Model model;
-
+	private String direction;
 	/**
 	  * C'tor to the MoveCommand.
 	* @param model-this is the model that doing all the functions of the game.
 	 */
 	public MoveCommand(Model model) {
 		this.model = model;
+
 	}
 
 	/**
@@ -30,6 +31,9 @@ public class MoveCommand extends Command {
 public void setParams(List<String> params) {
 	this.params=params;
 
+}
+public void setDirection(String direction) {
+	this.direction = direction;
 }
 
 }

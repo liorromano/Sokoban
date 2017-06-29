@@ -83,7 +83,7 @@ public class MyController implements Observer,Controller{
 		commands.put("exit", new ExitCommand(view,this,socket));
 		commands.put("finish", new FinishCommand(view,model));
 		commands.put("SaveToDataBase", new DataBaseCommand(view,model,manager));
-		commands.put("solve", new SolveCommand(model,socket));
+		commands.put("solve", new SolveCommand(model,view.getStartplayerName()));
 	}
 
 	/**
@@ -94,7 +94,6 @@ public class MyController implements Observer,Controller{
 	public void update(Observable o, Object arg) {
 		if (arg!=null)
 		{
-
 			@SuppressWarnings("unchecked")
 			List<String> params = (List<String>) arg;
 			String commandKey = params.remove(0);
@@ -104,6 +103,7 @@ public class MyController implements Observer,Controller{
 				System.out.println("Command " + commandKey + " not found");
 				return;
 			}
+
 			c.setParams(params);
 			controller.insertCommand(c);
 		}

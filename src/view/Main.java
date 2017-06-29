@@ -27,12 +27,9 @@ public class Main extends Application {
 			MyModel m=new MyModel();
 			MainWindowController v=(MainWindowController)loader.getController();
 			MyController theController;
-			
-			int port=5555;
-			Socket socket = new Socket("localhost", port);
-			System.out.println("connected to server");
-			manager=new SokobanDBManager(socket);
-			theController= new MyController(v, m,manager,socket);
+
+			manager=new SokobanDBManager();
+			theController= new MyController(v, m,manager);
 
 			m.addObserver(theController);
 			v.addObserver(theController);

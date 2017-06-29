@@ -1,22 +1,21 @@
 package controller.commands;
 
-
-
 import java.net.Socket;
 
 import model.Model;
+import view.View;
 
 
 public class SolveCommand extends Command {
 	private Model model;
-	private Socket socket;
+	private String name;
 	/**
 	   * C'tor to the SaveCommand.
 	* @param model-this is the model that doing all the functions of the game.
 	 */
-	public SolveCommand (Model model,Socket socket){
-		this.model = model;
-		this.socket=socket;
+	public SolveCommand (Model model,String name){
+		this .name=name;
+		this.model=model;
 		}
 
 	/**
@@ -24,7 +23,7 @@ public class SolveCommand extends Command {
 	 */
 	@Override
 	public void execute() {
-		model.solve(socket);
+		model.solve(model.getLevel(),name);
 	}
 
 

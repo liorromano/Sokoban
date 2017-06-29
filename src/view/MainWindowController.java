@@ -1,5 +1,6 @@
 package view;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Optional;
+import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,8 +50,11 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import model.Level;
+import model.LevelBin;
 import view.commands.exitTypes.RegularExit;
 import org.hibernate.query.Query;
+
+import controller.Client;
 import view.View;
 
 public class MainWindowController extends Observable implements View, Initializable {
@@ -72,8 +77,12 @@ public class MainWindowController extends Observable implements View, Initializa
 	private String playerName;
 	private String levelName;
 	private String searchText;
+	private String StartplayerName;
+
+
 	public MainWindowController() {
 		backgroundMusic();
+		enterName();
 
 	}
 
@@ -222,6 +231,27 @@ public class MainWindowController extends Observable implements View, Initializa
 		RegularExit exit = new RegularExit();
 		exit.exit();
 	}
+
+	public void enterName()
+	{
+		TextInputDialog dialog;
+		dialog = new TextInputDialog();
+		dialog.setTitle("Welcome");
+		dialog.setHeaderText("Connecting to server");
+		dialog.setContentText("Please enter your name:");
+		Stage stage=(Stage)dialog.getDialogPane().getScene().getWindow();
+
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()){
+			StartplayerName=result.get();
+		}
+		if(StartplayerName==null || StartplayerName.equals(""))
+		{
+			Random r = new Random();
+			StartplayerName=("Player"+r.nextInt(1000));
+		}
+	}
+
 
 	/**
 	 * This function resets the game timer.
@@ -570,10 +600,15 @@ public class MainWindowController extends Observable implements View, Initializa
 		return playerName;
 	}
 
-public void Solve()
+public void solve()
 {
 	notifyCommand("solve");
 }
+
+public String getStartplayerName() {
+	return StartplayerName;
+}
+
 
 }
 

@@ -1,13 +1,18 @@
 package model;
 
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
+
+import controller.Client;
 import model.data.loadersAndSavers.LoadLevel;
 import model.data.loadersAndSavers.SaveLevel;
 import model.policy.GeneralSokobanPolicy;
@@ -18,10 +23,77 @@ import model.policy.move.MyMove;
 public class MyModel extends Observable implements Model{
 
 	private Level level;
+	private Socket socket;
+	private BufferedReader serverInput;
+	private ObjectOutputStream outToServer;
 
 	public MyModel() {
 
 	}
+
+
+	public void solve(Level level,String name) {
+		if(level!=null)
+ 		{
+ 			String solution="";
+ 			String line="";
+ 			LevelBin levelBin=new LevelBin();
+ 			levelBin.setName(level.getName());
+ 			levelBin.setLevelString(level.getLevelString());
+ 			levelBin.setUserName(name);
+			try {
+				this.socket=new Socket("localhost",5555);
+				outToServer = new ObjectOutputStream(socket.getOutputStream());
+				outToServer.flush();
+				serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				outToServer.writeObject(levelBin);
+				outToServer.flush();
+				solution=serverInput.readLine()+"\n";
+				while ((line = serverInput.readLine()) != null) {
+					solution=solution+"\n"+line;
+			    }
+
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+
+
+ 				System.out.println(solution);
+ 				if(solution.equals("") || solution.equals("Unsolvable"))
+ 				{
+ 					System.out.println(solution);
+ 					//displayError("Level cannot be solved");
+ 				}
+ 				else
+ 					{
+ 					String [] moveCommands = solution.split("\n");
+ 					new Thread(new Runnable() {
+
+ 					@Override
+ 					public void run() {
+ 					for(String command : moveCommands)
+ 					{
+ 					System.out.println(command);
+ 					notifyCommand(command);
+ 					try {
+ 					Thread.sleep(500);
+ 					} catch (InterruptedException e) {
+ 									e.printStackTrace();
+ 					 							}
+ 											}
+ 										}
+ 				 				}).start();
+ 					}
+ 		}
+
+ 				//System.out.println("Solution received from server: " + solution);
+ 				//notifyCommand(solution);
+}
+
+
+
 	/**
 	 * The load function gets "String last", this is the path to a file,
 	 * and transfers it to "LoadLevel" to load it to a new level.
@@ -77,33 +149,6 @@ public class MyModel extends Observable implements Model{
 		if (level!=null)
 			this.level = level;
 	}
-	@Override
-	public void solve(Socket socket) {
-		if(this.level!=null)
-		{
-			String direction="";
-			String solution="";
-			LevelBin level=new LevelBin();
-			level.setName(this.level.getName());
-			level.setLevelString(this.level.getLevelString());
-			level.setUserName("lior");
-			BufferedReader serverInput;
-			try {
-				ObjectOutputStream outToServer = new ObjectOutputStream(socket.getOutputStream());
-				outToServer.writeObject(level);
-				serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-				List<String> params = new LinkedList<String>();
-
-				solution = serverInput.readLine();
-				System.out.println("Solution received from server: " + solution);
-				notifyCommand(solution);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
 
 	private void notifyCommand(String commandLine) {
 		String[] arr = commandLine.split(" ", 2);
@@ -121,4 +166,11 @@ public class MyModel extends Observable implements Model{
 
 
 
-}
+		}
+
+
+
+
+
+
+
