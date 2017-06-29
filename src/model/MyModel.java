@@ -24,7 +24,7 @@ public class MyModel extends Observable implements Model{
 
 	private Level level;
 	private Socket socket;
-	private BufferedReader serverInput;
+	private ObjectInputStream serverInput;
 	private ObjectOutputStream outToServer;
 
 	public MyModel() {
@@ -45,13 +45,20 @@ public class MyModel extends Observable implements Model{
 				this.socket=new Socket("localhost",5555);
 				outToServer = new ObjectOutputStream(socket.getOutputStream());
 				outToServer.flush();
-				serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				//serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				serverInput=new ObjectInputStream(socket.getInputStream());
 				outToServer.writeObject(levelBin);
 				outToServer.flush();
-				solution=serverInput.readLine()+"\n";
+				try {
+					solution = (String)serverInput.readObject();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				/*solution=serverInput.readLine()+"\n";
 				while ((line = serverInput.readLine()) != null) {
 					solution=solution+"\n"+line;
-			    }
+			    }*/
 
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block

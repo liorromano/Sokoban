@@ -1,10 +1,20 @@
 package view;
 
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -14,6 +24,7 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import entities.DbBin;
 import entities.HibernateUtil;
 import entities.ScoresManager;
 import javafx.scene.Scene;
@@ -78,7 +89,9 @@ public class MainWindowController extends Observable implements View, Initializa
 	private String levelName;
 	private String searchText;
 	private String StartplayerName;
-
+	private Socket socket;
+	private ObjectInputStream serverInput;
+	private ObjectOutputStream outToServer;
 
 	public MainWindowController() {
 		backgroundMusic();
@@ -361,7 +374,7 @@ public class MainWindowController extends Observable implements View, Initializa
 
 		TableView<ScoresManager> usertable=initiliazetable();
 
-		usertable.setItems(getUsers(levelName));
+		usertable.setItems(getUsers(levelName));/////////////call to server
 
 
 		Stage table = new Stage();
@@ -389,90 +402,12 @@ public class MainWindowController extends Observable implements View, Initializa
 		});
 
 	}
-/**
- * This function initialize the table.
- * @return- return the users table.
- */
-	private TableView<ScoresManager> initiliazetable()
-	{
-		TableView<ScoresManager> usertable;
-
-		TableColumn<ScoresManager, Integer> LevelNameColumn = new TableColumn<>("LevelName");
-		LevelNameColumn.setMinWidth(100);
-		LevelNameColumn.setCellValueFactory(new PropertyValueFactory<>("levelname"));
-
-		TableColumn<ScoresManager, String> FirstNameColumn = new TableColumn<>("FullName");
-		FirstNameColumn.setMinWidth(150);
-		FirstNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullname"));
-
-		TableColumn<ScoresManager, Integer> FinishTimeColumn = new TableColumn<>("Finish Time");
-		FinishTimeColumn.setMinWidth(100);
-		FinishTimeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-
-		TableColumn<ScoresManager, Integer> StepsColumn = new TableColumn<>("Steps");
-		StepsColumn.setMinWidth(100);
-		StepsColumn.setCellValueFactory(new PropertyValueFactory<>("Steps"));
-
-		usertable = new TableView<>();
-
-		usertable.getColumns().addAll(LevelNameColumn, FirstNameColumn, FinishTimeColumn, StepsColumn);
-		usertable.getSortOrder().add(LevelNameColumn);
-		usertable.getSortOrder().add(FinishTimeColumn);
-		usertable.getSortOrder().add(StepsColumn);
-
-		return usertable;
-	}
-
-	/**
-	 * This function shows all scores from db.
-	 * @param levelName- the name of the level that we want to see all the scores.
-	 * @return- return a table.
-	 */
-	public ObservableList<ScoresManager> getUsers(String levelName) {
-		ObservableList<ScoresManager> users = FXCollections.observableArrayList();
-		if(levelName!=null)
-		{
-			Query<ScoresManager> query = HibernateUtil.getSessionFactory().openSession().createQuery("from Scores S where S.levelname='"+levelName+"'");
-			query.setMaxResults(10);
-			List<ScoresManager> list = query.list();
-			if (!list.isEmpty()) {
-
-				for (ScoresManager u : list) {
-					users.add(u);
-				}
-				for (ScoresManager user : users)
-					user.toString();
-				return users;
-			}
-		}
-				return users;
-	}
-/**
- * This function shows a specific scores for player.
- * @param selectedScore- the score that the user click on.
- * @return- return a table.
- */
-	public ObservableList<ScoresManager> getUser(ScoresManager selectedScore) {
-
-		ObservableList<ScoresManager> users = FXCollections.observableArrayList();
-		Query<ScoresManager> query = HibernateUtil.getSessionFactory().openSession()
-				.createQuery("from Scores S where S.fullname='" + selectedScore.getFullname() + "'");
-		List<ScoresManager> list = query.list();
-
-		for (ScoresManager u : list) {
-			users.add(u);
-		}
-		for (ScoresManager user : users)
-			user.toString();
-
-		return users;
-	}
 
 	public void showPlayerTable(ScoresManager selectedScore) {
 		if (selectedScore!=null)
 		{
 			TableView<ScoresManager> usertable=initiliazetable();
-			usertable.setItems(getUser(selectedScore));
+			usertable.setItems(getUser(selectedScore));/////////////call to server
 
 			Stage table = new Stage();
 			table.setTitle("Player Stats");
@@ -492,7 +427,7 @@ public class MainWindowController extends Observable implements View, Initializa
 	public void showLeaderBoards() {
 
 		TableView<ScoresManager> usertable=initiliazetable();
-		usertable.setItems(getAllScores());
+		usertable.setItems(getAllScores());/////////////call to server
 		ObservableList<ScoresManager> users = usertable.getItems();
 
 		Stage table = new Stage();
@@ -566,13 +501,62 @@ public class MainWindowController extends Observable implements View, Initializa
 
 			});
 		}
-/**
- * This function shows all scores.
- * @return-return a table of the scores.
- */
+
+
+	/**
+	 * This function shows a specific scores for player.
+	 * @param selectedScore- the score that the user click on.
+	 * @return- return a table.
+	 */
+		public ObservableList<ScoresManager> getUser(ScoresManager selectedScore) {
+
+			ObservableList<ScoresManager> users = FXCollections.observableArrayList();
+			Query<ScoresManager> query = HibernateUtil.getSessionFactory().openSession()
+					.createQuery("from Scores S where S.fullname='" + selectedScore.getFullname() + "'");
+			List<ScoresManager> list = query.list();
+
+			for (ScoresManager u : list) {
+				users.add(u);
+			}
+			for (ScoresManager user : users)
+				user.toString();
+
+			return users;
+		}
+	/**
+	 * This function shows all scores.
+	 * @return-return a table of the scores.
+	 */
+	@SuppressWarnings("unchecked")
 	public ObservableList<ScoresManager> getAllScores() {
+		ObservableList<ScoresManager> solution=FXCollections.observableArrayList();
+
 		ObservableList<ScoresManager> users = FXCollections.observableArrayList();
-			Query<ScoresManager> query = HibernateUtil.getSessionFactory().openSession().createQuery("from Scores");
+		Query<ScoresManager> query = HibernateUtil.getSessionFactory().openSession().createQuery("from Scores");
+		query.setMaxResults(10);
+		List<ScoresManager> list = query.list();
+		if (!list.isEmpty()) {
+
+			for (ScoresManager u : list) {
+				users.add(u);
+			}
+			for (ScoresManager user : users)
+				user.toString();
+			return users;
+		}
+		return users;
+		}
+
+	/**
+	 * This function shows all scores from db.
+	 * @param levelName- the name of the level that we want to see all the scores.
+	 * @return- return a table.
+	 */
+	public ObservableList<ScoresManager> getUsers(String levelName) {
+		ObservableList<ScoresManager> users = FXCollections.observableArrayList();
+		if(levelName!=null)
+		{
+			Query<ScoresManager> query = HibernateUtil.getSessionFactory().openSession().createQuery("from Scores S where S.levelname='"+levelName+"'");
 			query.setMaxResults(10);
 			List<ScoresManager> list = query.list();
 			if (!list.isEmpty()) {
@@ -584,7 +568,44 @@ public class MainWindowController extends Observable implements View, Initializa
 					user.toString();
 				return users;
 			}
-			return users;
+		}
+				return users;
+	}
+
+
+
+	/**
+	 * This function initialize the table.
+	 * @return- return the users table.
+	 */
+		private TableView<ScoresManager> initiliazetable()
+		{
+			TableView<ScoresManager> usertable;
+
+			TableColumn<ScoresManager, Integer> LevelNameColumn = new TableColumn<>("LevelName");
+			LevelNameColumn.setMinWidth(100);
+			LevelNameColumn.setCellValueFactory(new PropertyValueFactory<>("levelname"));
+
+			TableColumn<ScoresManager, String> FirstNameColumn = new TableColumn<>("FullName");
+			FirstNameColumn.setMinWidth(150);
+			FirstNameColumn.setCellValueFactory(new PropertyValueFactory<>("fullname"));
+
+			TableColumn<ScoresManager, Integer> FinishTimeColumn = new TableColumn<>("Finish Time");
+			FinishTimeColumn.setMinWidth(100);
+			FinishTimeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+
+			TableColumn<ScoresManager, Integer> StepsColumn = new TableColumn<>("Steps");
+			StepsColumn.setMinWidth(100);
+			StepsColumn.setCellValueFactory(new PropertyValueFactory<>("Steps"));
+
+			usertable = new TableView<>();
+
+			usertable.getColumns().addAll(LevelNameColumn, FirstNameColumn, FinishTimeColumn, StepsColumn);
+			usertable.getSortOrder().add(LevelNameColumn);
+			usertable.getSortOrder().add(FinishTimeColumn);
+			usertable.getSortOrder().add(StepsColumn);
+
+			return usertable;
 		}
 
 

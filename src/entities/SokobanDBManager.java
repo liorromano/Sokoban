@@ -1,22 +1,22 @@
 package entities;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.List;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
 
 
  public class SokobanDBManager extends Observable implements DBmanager{
 	 private static SessionFactory factory;
 	 private Configuration configuration;
-	 private Socket socket;
+	private Socket socket;
+	private ObjectOutputStream outToServer;
 	 /**
 	  * This is the c'tor of SokobanDBManager.
 	  */
@@ -26,145 +26,29 @@ import org.hibernate.query.Query;
 		configuration.configure();
 		factory = configuration.buildSessionFactory();
 	}
-public SokobanDBManager(Socket socket) {
-		this.socket=socket;
-	}
-/**
- * This function add a level to the levels database table.
- */
-	 public void addLevel(String fName) {
-			LevelsManager level = new LevelsManager(fName);
-			Transaction tx = null;
-			Session session = factory.openSession();
-			try {
-				tx = session.beginTransaction();
-				session.save(level);
-				tx.commit();
-			} catch (HibernateException e) {
-				if (tx != null)
-					tx.rollback();
-				e.printStackTrace();
-			} finally {
-				session.close();
-			}
-
-		}
-	 /**
-	  * This function add a user to the users database table.
-	  */
-		public void addUser(String fName) {
-			UsersManager user = new UsersManager(fName);
-			Transaction tx = null;
-			Session session = factory.openSession();
-			try {
-				tx = session.beginTransaction();
-				session.save(user);
-				tx.commit();
-			} catch (HibernateException e) {
-				if (tx != null)
-					tx.rollback();
-				e.printStackTrace();
-			} finally {
-				session.close();
-			}
-		}
-		/**
-		 * This function insert a score to the scores database table.
-		 * @param name- this is an input of the user name.
-		 * @param levelName-the level name to be saved.
-		 * @param time-the time that the user finished the level.
-		 * @param steps-counter of how much steps it takes the user to finish the level.
-		 */
-		private void addScore(String name, String levelName,int time, int steps) {
-			ScoresManager emp = new ScoresManager(name,levelName,time,steps);
-			Transaction tx = null;
-			Session session = factory.openSession();
-			try {
-			tx = session.beginTransaction();
-			session.save(emp);
-			tx.commit();
-			}
-			catch (HibernateException e) {
-			if (tx != null)
-			tx.rollback();
-			e.printStackTrace();
-			} finally {
-			session.close();
-			}
-		}
-		/**
-		 * This function delete a score from the scores database table.
-		 * @param score-the score that need to be deleted.
-		 */
-		private void deleteScore(ScoresManager score) {
-			Session session = factory.openSession();
-			Transaction tx = null;
-			try {
-			tx = session.beginTransaction();
-			session.delete(score);
-			tx.commit();
-			}
-			catch (HibernateException e) {
-			if (tx != null)
-			tx.rollback();
-			e.printStackTrace();
-			}
-			finally {
-			session.close();
-			}
-			}
 
 		/**
 		 * This function checks if there is already a score in the data base.
 		 * If there is, it checks if we need to save a new score or not.
 		 */
 		public void checkIfsave(String name,String levelName, int step, int time) {
-			UsersManager user=null;
-			ScoresManager scores=null;
-			LevelsManager levels=null;
+			//send to server the parameters
 
-			Session session = factory.openSession();
-
-			Query<UsersManager> query = session.createQuery("from Users E where E.fullname='"+name+"'");
-			List<UsersManager> list = query.list();
-			if(!list.isEmpty())
-			{
-				user=list.get(0);
+			DbBin db=new DbBin();
+			db.setName(name);
+ 			db.setLevelName(levelName);
+ 			db.setStep(step);
+ 			db.setTime(time);
+			try {
+				this.socket=new Socket("localhost",5555);
+				outToServer = new ObjectOutputStream(socket.getOutputStream());
+				outToServer.flush();
+				outToServer.writeObject(db);
+				outToServer.flush();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			else
-			{
-				addUser(name);
-			}
-
-			Query<LevelsManager> query2 = session.createQuery("from Levels E where E.levelname='"+levelName+"'");
-			List<LevelsManager> list2 = query2.list();
-			if (!list2.isEmpty())
-			{
-				levels=list2.get(0);
-			}
-			else
-			{
-				addLevel(levelName);
-			}
-
-			Query<ScoresManager> query3 = session.createQuery("from Scores s Where s.levelname='"+levelName+"' and s.fullname='"+name+"'");
-			List<ScoresManager> list3 = query3.list();
-
-			if (!list3.isEmpty())
-			{
-				scores=list3.get(0);
-				if(scores.getSteps()>step||scores.getTime()>time)
-				{
-					deleteScore(scores);
-					addScore(name,levelName, time, step);
-				}
-
-			}
-			else
-			{
-				addScore(name, levelName, time, step);
-			}
-
 		}
 
  }
